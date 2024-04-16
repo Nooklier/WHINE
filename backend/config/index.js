@@ -1,6 +1,4 @@
 // backend/config/index.js
-const { environment } = require('./config');
-const isProduction = environment === 'production';
 
 module.exports = {
     environment: process.env.NODE_ENV || 'development',             // Tells your app if it's just practicing (development) or performing for real (production).
