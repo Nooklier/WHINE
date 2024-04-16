@@ -28,6 +28,6 @@ router.post(
         user: safeUser
       });
     }
-  );
+  ); 
 
 module.exports = router;
