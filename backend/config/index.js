@@ -1,4 +1,6 @@
 // backend/config/index.js
+const { environment } = require('./config');
+const isProduction = environment === 'production';
 
 module.exports = {
     environment: process.env.NODE_ENV || 'development',             // Tells your app if it's just practicing (development) or performing for real (production).
@@ -9,3 +11,4 @@ module.exports = {
       expiresIn: process.env.JWT_EXPIRES_IN                         // To see how long the messages are good for.
     }
   };
+
