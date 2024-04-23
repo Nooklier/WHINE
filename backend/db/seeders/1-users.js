@@ -1,46 +1,60 @@
 'use strict';
 
 const { User } = require('../models');
-const bcrypt = require("bcryptjs");
+const bcrypt = require('bcryptjs');
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
-  options.schema = process.env.SCHEMA;  // define your schema in options object
+  options.schema = process.env.SCHEMA;  
 }
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
+    const hashedPassword = await bcrypt.hash('password', 10);
+    
     await User.bulkCreate([
       {
-        email: 'demo@user.io',
-        firstName: 'demo',
-        lastName: 'user',
-        username: 'Demo-lition',
-        hashedPassword: bcrypt.hashSync('password')
+        username: 'john_doe',
+        password: hashedPassword,
+        firstName: 'John',
+        lastName: 'Doe',
+        role: 'Employee'
       },
       {
-        email: 'user1@user.io',
-        firstName: 'demo2',
-        lastName: 'user2',
-        username: 'FakeUser1',
-        hashedPassword: bcrypt.hashSync('password2')
+        username: 'jane_doe',
+        password: hashedPassword,
+        firstName: 'Jane',
+        lastName: 'Doe',
+        role: 'Employee'
       },
       {
-        email: 'user2@user.io',
-        firstName: 'demo3',
-        lastName: 'user3',
-        username: 'FakeUser2',
-        hashedPassword: bcrypt.hashSync('password3')
+        username: 'admin_user',
+        password: hashedPassword,
+        firstName: 'Admin',
+        lastName: 'User',
+        role: 'Manager'
+      },
+      {
+        username: 'alice_smith',
+        password: hashedPassword,
+        firstName: 'Alice',
+        lastName: 'Smith',
+        role: 'Employee'
+      },
+      {
+        username: 'bob_jones',
+        password: hashedPassword,
+        firstName: 'Bob',
+        lastName: 'Jones',
+        role: 'Employee'
       }
-    ], options, { validate: true });
+    ], options);
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     options.tableName = 'Users';
-    const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      username: { [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2'] }
+      username: { [Sequelize.Op.in]: ['john_doe', 'jane_doe', 'admin_user', 'alice_smith', 'bob_jones'] }
     }, {});
   }
 };
-
