@@ -3,13 +3,21 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
+
     static associate(models) {
+
       this.hasMany(models.TimeOffRequest, {
         foreignKey: 'userId',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
       });
-    }
+
+      this.hasOne(models.PTO, {
+        foreignKey: 'userId',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+      });
+    } 
 
     async validatePassword(password) {
       return password === this.password;
