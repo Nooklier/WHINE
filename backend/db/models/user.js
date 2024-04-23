@@ -4,7 +4,11 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      // associations can be defined here
+      this.hasMany(models.TimeOffRequest, {
+        foreignKey: 'userId',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+      });
     }
 
     async validatePassword(password) {
